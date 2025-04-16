@@ -23,7 +23,7 @@ var S = {
     if (i !== -1) {
       S.UI.simulate(decodeURI(action).substring(i + 3));
     } else {
-      S.UI.simulate('|#countdown 3||某某某|我们|在一起吧|❤|#rectangle|');
+      S.UI.simulate('|3|2|1|某某某|我们|在一起吧|❤|#rectangle|');
     }
 
     S.Drawing.loop(function () {
@@ -208,33 +208,21 @@ S.UI = (function () {
     }, 2000, sequence.length);
   }
 
-  function checkInputWidth(e) {
-    if (input.value.length > 18) {
-      ui.classList.add('ui--wide');
-    } else {
-      ui.classList.remove('ui--wide');
+
+    // 删除这个多余的代码块
+    /*
+    canvas.addEventListener('click', function (e) {
+      overlay.classList.remove('overlay--visible');
+    });
     }
+    */
 
-    if (firstAction && input.value.length > 0) {
-      ui.classList.add('ui--enter');
-    } else {
-      ui.classList.remove('ui--enter');
-    }
-  }
-
-
-
-  return {
-    simulate: function (action) {
-      // 在这里添加 3 秒延迟
-      setTimeout(function() {
+    return {
+      simulate: function (action) {
         performAction(action);
-      }, 3000); // 延迟 3000 毫秒
+      }
     }
-  }
-}());
-
-
+  }());
 
 
 
@@ -610,3 +598,4 @@ S.Shape = (function () {
 }());
 
 
+S.init();
