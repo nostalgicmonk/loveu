@@ -16,6 +16,7 @@
 	</head>
 	<body>
 		<canvas id="canvas"> 您的浏览器不支持canvas标签，请您更换浏览器 </canvas>
+		<button id="colorSwitch" style="position: fixed; top: 10px; right: 10px; z-index: 100; padding: 5px;">切换颜色</button>
 		<script>
 			const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 			var canvas = document.getElementById("canvas");
@@ -49,7 +50,20 @@
 			}
 
 			//获取随机颜色
+			// 添加颜色模式控制变量
+			var isRandomColor = false;
+			
+			// 添加按钮点击事件
+			document.getElementById('colorSwitch').onclick = function() {
+				isRandomColor = !isRandomColor;
+				this.textContent = isRandomColor ? '切换为玫红色' : '切换为随机色';
+			};
+
 			function color() {
+				if (!isRandomColor) {
+					return '#6B0536'; // 深玫红色
+				}
+				// 随机颜色的原有逻辑
 				var colors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f'];
 				var color = "";
 				for (var i = 0; i < 6; i++) {
