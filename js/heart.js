@@ -10,6 +10,10 @@ var settings = {
     effect: -0.75, // play with this for a nice effect
     size:      30, // particle size in pixels
   },
+  colors: {
+    heart: '#ea80b0',  // 添加颜色设置
+    text: '#ea80b0'
+  }
 };
 
 /*
@@ -155,31 +159,28 @@ var ParticlePool = (function() {
     // 创建 canvas 元素
     var canvas = document.createElement('canvas');
     canvas.id = 'heartCanvas';
-    canvas.style.position = 'fixed'; // 改为 fixed 定位
+    canvas.style.position = 'fixed';
     canvas.style.top = '0';
     canvas.style.left = '0';
     canvas.style.width = '100%';
     canvas.style.height = '100%';
-    canvas.style.zIndex = '9999'; // 确保在最上层
-    canvas.style.pointerEvents = 'none'; // 允许点击穿透
+    canvas.style.zIndex = '9999';
+    canvas.style.pointerEvents = 'none';
     document.body.appendChild(canvas);
 
-    // 立即设置 canvas 尺寸
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    // 等待文字特效结束后再启动爱心特效
-    setTimeout(function() {
+    // 监听文字特效完成事件
+    window.addEventListener('textAnimationComplete', function() {
       var context = canvas.getContext('2d'),
           particles = new ParticlePool(settings.particles.length),
           particleRate = settings.particles.length / settings.particles.duration,
           time;
     
     // get point on heart with -PI <= t <= PI
+    // 修改爱心大小参数
     function pointOnHeart(t) {
       return new Point(
-        160 * Math.pow(Math.sin(t), 3),
-        130 * Math.cos(t) - 50 * Math.cos(2 * t) - 20 * Math.cos(3 * t) - 10 * Math.cos(4 * t) + 25
+        320 * Math.pow(Math.sin(t), 3),  // 从160增加到320
+        260 * Math.cos(t) - 100 * Math.cos(2 * t) - 40 * Math.cos(3 * t) - 20 * Math.cos(4 * t) + 50  // 所有参数翻倍
       );
     }
     
@@ -207,7 +208,7 @@ var ParticlePool = (function() {
         context.lineTo(point.x, point.y);
       }
       context.closePath();
-      context.fillStyle = '#ea80b0';
+      context.fillStyle = settings.colors.heart;  // 使用颜色变量
       context.fill();
       
       var image = new Image();
@@ -233,6 +234,16 @@ var ParticlePool = (function() {
       
       particles.update(deltaTime);
       particles.draw(context, image);
+      
+      // 添加文字，使用百分比计算位置
+      context.font = '30px Arial';
+      context.fillStyle = settings.colors.text;
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+      // 将文字位置设置在爱心高度的三分之二处
+      var heartHeight = 520; // 爱心的总高度（260 * 2）
+      var offsetY = (heartHeight / 3) * 2; // 计算三分之二的位置
+      context.fillText('💗我会永远陪着你', canvas.width / 2, canvas.height / 2 - offsetY * 0.3);
     }
     
     function onResize() {
@@ -243,7 +254,6 @@ var ParticlePool = (function() {
     onResize();
     window.addEventListener('resize', onResize);
     render();
-    
-  }, 2000 * 9); // 9是文字序列的长度
+    });
   });
 })();

@@ -23,12 +23,15 @@ var S = {
     if (i !== -1) {
       S.UI.simulate(decodeURI(action).substring(i + 3));
     } else {
-      var message = '|3|2|1|某某某|我们|在一起吧|❤|#rectangle|';
+      var message = '|3|2|1|伏星|我们|在一起吧|❤|';
       var elementCount = message.split('|').filter(Boolean).length;
       S.UI.simulate(message);
       setTimeout(function() {
         S.UI.reset(true);
-      }, 2000 * elementCount);
+        // 发送文字特效完成的事件
+        var event = new CustomEvent('textAnimationComplete');
+        window.dispatchEvent(event);
+      }, 2000 * (elementCount+1));
     }
 
     S.Drawing.loop(function () {
