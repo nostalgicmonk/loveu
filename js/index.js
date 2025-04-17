@@ -23,7 +23,12 @@ var S = {
     if (i !== -1) {
       S.UI.simulate(decodeURI(action).substring(i + 3));
     } else {
-      S.UI.simulate('|3|2|1|某某某|我们|在一起吧|❤|#rectangle|');
+      var message = '|3|2|1|某某某|我们|在一起吧|❤|#rectangle|';
+      var elementCount = message.split('|').filter(Boolean).length;
+      S.UI.simulate(message);
+      setTimeout(function() {
+        S.UI.reset(true);
+      }, 2000 * elementCount);
     }
 
     S.Drawing.loop(function () {
@@ -220,7 +225,8 @@ S.UI = (function () {
     return {
       simulate: function (action) {
         performAction(action);
-      }
+      },
+      reset: reset  // 添加 reset 方法到返回对象
     }
   }());
 
