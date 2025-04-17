@@ -15,61 +15,9 @@
 		</style>
 	</head>
 	<body>
-		<canvas style="position:absolute;width:100%;height:100%;z-index:9999" class="canvas"></canvas>
-
+		<canvas style="position:absolute;width:100%;height:100%;z-index:99999" class="canvas"></canvas>
+		<canvas id="canvas" style="position:relative;z-index:1"> 您的浏览器不支持canvas标签，请您更换浏览器 </canvas>
+		<script src="js/rain.js"></script>
 		<script src="js/index.js"></script>
-		<canvas id="canvas"> 您的浏览器不支持canvas标签，请您更换浏览器 </canvas>
-		<script>
-			const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-			var canvas = document.getElementById("canvas");
-			var can = canvas.getContext("2d");
-			var w = canvas.width = window.innerWidth; //获取屏幕宽度
-			var h = canvas.height = window.innerHeight; //获取屏幕高度
-
-			can.fillStyle = color();
-			if (/Windows/i.test(userAgent)) can.font="16px 微软雅黑";
-			if (/iPhone/i.test(userAgent)) can.font="20px 微软雅黑";
-
-			var words = Array(256).join("1").split("");
-
-			setInterval(draw, 50);
-
-			function draw() {
-				can.fillStyle = 'rgba(0,0,0,0.05)';
-				can.fillRect(0, 0, w, h);
-				can.fillStyle = color();
-				words.map(function(y, n) {
-					// 定义您想要显示的字符
-					var chars = "ILOVEYOU❤️";
-					// 在draw函数中
-					text = chars.charAt(Math.floor(Math.random() * chars.length));
-					x = n * 10;
-					can.fillText(text, x, y)
-					if (/Windows/i.test(userAgent)) words[n] = (y > (h / 2) + Math.random() * w ? 0 : y + 16);
-					if (/iPhone/i.test(userAgent)) words[n] = (y > (h / 2) + Math.random() * w ? 0 : y + 20);
-					
-				});
-			}
-
-			//获取随机颜色
-			// 添加颜色模式控制变量
-			var isRandomColor = false;
-			
-	
-
-			function color() {
-				if (!isRandomColor) {
-					return '#6B0536'; // 深玫红色
-				}
-				// 随机颜色的原有逻辑
-				var colors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f'];
-				var color = "";
-				for (var i = 0; i < 6; i++) {
-					var n = Math.ceil(Math.random() * 15);
-					color += "" + colors[n];
-				}
-				return '#' + color;
-			}
-		</script>
 	</body>
 </html>
